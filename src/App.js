@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function App() {
   const getRandomNumber = () => {
@@ -35,13 +35,42 @@ function App() {
       color: '#f25022',
       value: getRandomNumber(),
     }
-  ])
+  ]);
 
+  const findBigBarItem = (data)  => {
+    return data.sort((val1,val2) => val2.value-val1.value)[0].value
+  
+  }
+
+  const [bigBarData, setBigBarData] = useState(findBigBarItem(barData))
+
+  const setBarDataWithRandom = () => {
+    let data=[...barData];
+    data.forEach((item) => {
+      item.value+=getRandomNumber();
+    })
+    setBigBarData(findBigBarItem(data))
+    setBarData(data);
+  }
+
+  useEffect(() => {
+    let timer;
+    timer = setInterval(() => {
+      //setBarDataWithRandom()
+    }, 500)
+  },[])
+
+  const renderBarItem = (item,index) => {
+    let rate = item.value/bigBarData;
+    rate=rate * (1000 - 40);
+    const percent = (rate*100)/1040;
+    console.log(percent);
+  }
 
   return (
-    <div className="App">
-      d
-    </div>
+    <>
+      <div className="app-title">Firmaların Müşteri Sayıları</div>
+    </>
   );
 }
 
