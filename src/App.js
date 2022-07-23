@@ -1,4 +1,8 @@
+import { render } from "@testing-library/react";
 import React, { useEffect, useState } from "react";
+import './App.css';
+import ChartItem from "./Components/ChartItem";
+import Area from "./Components/Area";
 
 function App() {
   const getRandomNumber = () => {
@@ -8,7 +12,7 @@ function App() {
     {
       id:1,
       title: 'Facebook',
-      color: '#42G7B2',
+      color: '#4267B2',
       value: getRandomNumber(),
     },
     {
@@ -56,7 +60,7 @@ function App() {
   useEffect(() => {
     let timer;
     timer = setInterval(() => {
-      //setBarDataWithRandom()
+      setBarDataWithRandom()
     }, 500)
   },[])
 
@@ -64,12 +68,23 @@ function App() {
     let rate = item.value/bigBarData;
     rate=rate * (1000 - 40);
     const percent = (rate*100)/1040;
-    console.log(percent);
+    return  <ChartItem 
+      key={item.id}
+      backgroundColor={item.color}
+      width={percent+"%"}
+      text={item.title}
+      count={item.value}
+      top={(index===0?10:(index*40)+20)+'px'}
+    />
   }
 
   return (
     <>
       <div className="app-title">Firmaların Müşteri Sayıları</div>
+
+      <Area data={barData}>
+        {barData.map((item,index)=>renderBarItem(item,index))}
+      </Area>
     </>
   );
 }
